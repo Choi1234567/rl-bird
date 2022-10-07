@@ -86,7 +86,7 @@ class CliffWalkingEnv:
                     if done:
                         state = 0
                         res.append(total_reward)
-                        self.info.set('游戏结束,本次累计奖励%s' % total_reward)
+                        self.info.set('第%s轮游戏结束,本次累计奖励%s' % (i, total_reward))
                         self.restart()
                         sleep(1)
                         break

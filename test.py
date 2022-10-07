@@ -1,4 +1,5 @@
 import copy
+import numpy as np
 
 
 class CliffWalkingEnv:
@@ -83,6 +84,7 @@ class PolicyIteration:
             maxq = max(qsa_list)
             cntq = qsa_list.count(maxq)  # 计算有几个动作得到了最大的Q值
             # 让这些动作均分概率
+
             self.pi[s] = [1 / cntq if q == maxq else 0 for q in qsa_list]
         print("策略提升完成")
         return self.pi
@@ -170,6 +172,8 @@ class ValueIteration:
 
 
 env = CliffWalkingEnv()
+for i in env.P:
+    print(i)
 action_meaning = ['^', 'v', '<', '>']
 theta = 0.001
 gamma = 0.9
@@ -184,3 +188,14 @@ gamma = 0.9
 agent = ValueIteration(env, theta, gamma)
 agent.value_iteration()
 print_agent(agent, action_meaning, list(range(37, 47)), [47])
+
+
+print(np.eye(3,3))
+
+'''
+ o o o o o o o o o o o o
+ o o o o o o o o o o o o
+ x o o o o o o o o o o o
+ v o o o o o o o o o o o
+
+'''
