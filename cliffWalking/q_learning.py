@@ -2,7 +2,7 @@ import numpy as np
 
 
 class Q_learning:
-    def __init__(self, env, gamma=0.5, alpha=0.5, epsilon=0.99):
+    def __init__(self, env, gamma=0.9, alpha=0.1, epsilon=0.99):
         self.env = env
         self.q_table = np.zeros([env.total, env.actions])
         self.gamma = gamma
