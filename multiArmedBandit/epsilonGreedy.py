@@ -36,6 +36,7 @@ def main():
     bandit = Bandit(10)
     agent = EpsilonGreedyAgent(bandit, 1, 0.99)
     agent.run(1000)
+    print(bandit.arms)
     print(np.argmax(agent.steps), np.argmax(agent.estimate), bandit.get_best_arm(),
           np.argmax(agent.steps) == bandit.get_best_arm())
 
