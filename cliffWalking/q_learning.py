@@ -16,6 +16,9 @@ class Q_learning:
         else:
             return np.random.randint(0, self.env.actions)
 
+    def get_best_action(self, state):
+        return np.argmax(self.q_table[state])
+
     def update(self, state, action, next_state, reward):
         error = reward + self.gamma * (self.q_table[next_state].max() - self.q_table[state][action])
         self.q_table[state][action] += self.alpha * error

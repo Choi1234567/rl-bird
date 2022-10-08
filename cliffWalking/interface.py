@@ -88,12 +88,29 @@ class CliffWalkingEnv:
                         res.append(total_reward)
                         self.info.set('第%s轮游戏结束,本次累计奖励%s' % (i, total_reward))
                         self.restart()
-                        sleep(1)
+                        sleep(0.5)
                         break
                     else:
-                        sleep(0.05)
+                        sleep(0.01)
             plt.plot(range(1, episode + 1), res)
             plt.show()
+            self.info.set('训练结束,开始展示最佳路线:')
+            best_reward = 0
+            while True:
+                self.canvas.create_text(100 * (self.position % self.row) + 50, 100 * (self.position // self.row) + 50,
+                                        text='😁', font=("仿宋", 75))
+                action = q.get_action(state)
+                next_state, reward, done = self.step(action)
+                best_reward += reward
+                q.update(state, action, next_state, reward)
+                state = next_state
+                self.win.update()
+                sleep(2)
+                if done:
+                    state = 0
+                    self.restart()
+                    self.info.set('最佳路线累计奖励为%s' % best_reward)
+
         next_state, reward, done = None, None, None
         if evt.keysym == 'Up':
             next_state, reward, done = self.step(0)
