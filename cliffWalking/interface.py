@@ -8,14 +8,14 @@ from cliffWalking.q_learning import Q_learning
 
 
 class CliffWalkingEnv:
-    def __init__(self, column=12, row=4):
+    def __init__(self, column=12, row=4, holes=4):
         self.column = column
         self.row = row
         self.total = column * row
         self.cells = [-1] * self.total
         self.position = 0
         self.actions = 4
-        for _ in range(column):
+        for _ in range(holes):
             self.cells[np.random.randint(1, self.total - 1)] = -100
         self.cells[-1] = 0
         self.win = tk.Tk()
@@ -69,7 +69,7 @@ class CliffWalkingEnv:
     def on_key(self, evt):
         """响应所有键盘事件的函数"""
         if evt.keysym == 'Return':
-            episode = 500
+            episode = 1000
             q = Q_learning(self)
             state = 0
             res =[]
@@ -88,10 +88,11 @@ class CliffWalkingEnv:
                         res.append(total_reward)
                         self.info.set('第%s轮游戏结束,本次累计奖励%s' % (i, total_reward))
                         self.restart()
-                        sleep(0.5)
+                        #sleep(0.5)
                         break
                     else:
-                        sleep(0.01)
+                        pass
+                        #sleep(0.01)
             plt.plot(range(1, episode + 1), res)
             plt.show()
             self.info.set('训练结束,开始展示最佳路线:')
@@ -99,7 +100,7 @@ class CliffWalkingEnv:
             while True:
                 self.canvas.create_text(100 * (self.position % self.row) + 50, 100 * (self.position // self.row) + 50,
                                         text='😁', font=("仿宋", 75))
-                action = q.get_action(state)
+                action = q.get_best_action(state)
                 next_state, reward, done = self.step(action)
                 best_reward += reward
                 q.update(state, action, next_state, reward)
@@ -108,8 +109,9 @@ class CliffWalkingEnv:
                 sleep(2)
                 if done:
                     state = 0
-                    self.restart()
+                    # self.restart()
                     self.info.set('最佳路线累计奖励为%s' % best_reward)
+                    return
 
         next_state, reward, done = None, None, None
         if evt.keysym == 'Up':
@@ -132,5 +134,5 @@ class CliffWalkingEnv:
 
 
 if __name__ == '__main__':
-    cw = CliffWalkingEnv(4, 12)
+    cw = CliffWalkingEnv(8, 12, 16)
     tk.mainloop()
