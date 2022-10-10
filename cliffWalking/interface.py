@@ -69,7 +69,7 @@ class CliffWalkingEnv:
     def on_key(self, evt):
         """响应所有键盘事件的函数"""
         if evt.keysym == 'Return':
-            episode = 1000
+            episode = 200
             q = Q_learning(self)
             state = 0
             res =[]
